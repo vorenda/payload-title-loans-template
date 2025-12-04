@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  payload:
+    image: node:20-alpine
+    ports:
+      - '3847:3000'
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    working_dir: /home/node/app/
+    command: sh -c "corepack enable && corepack prepare pnpm@9.0.0 --activate && pnpm install && pnpm dev"
+    depends_on:
+      - postgres
+      # - mongo
+    env_file:
+      - .env
+
+  # Ensure your DATABASE_URI uses 'postgres' as the hostname ie. postgresql://postgres@127.0.0.1:5499/title_loans_db
+  postgres:
+    restart: always
+    image: postgres:16
+    volumes:
+      - pgdata:/var/lib/postgresql
+    ports:
+      - '5499:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: title_loans_db
+      POSTGRES_HOST_AUTH_METHOD: trust
+
+  # Uncomment the following to use mongodb
+  # mongo:
+  #   image: mongo:latest
+  #   ports:
+  #     - '27017:27017'
+  #   command:
+  #     - --storageEngine=wiredTiger
+  #   volumes:
+  #     - data:/data/db
+  #   logging:
+  #     driver: none
+
+volumes:
+  pgdata:
+  # data:
+  node_modules:
