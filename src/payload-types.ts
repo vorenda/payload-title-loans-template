@@ -72,6 +72,7 @@ export interface Config {
     services: Service;
     'state-pages': StatePage;
     'city-pages': CityPage;
+    pages: Page;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,6 +85,7 @@ export interface Config {
     services: ServicesSelect<false> | ServicesSelect<true>;
     'state-pages': StatePagesSelect<false> | StatePagesSelect<true>;
     'city-pages': CityPagesSelect<false> | CityPagesSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -399,6 +401,70 @@ export interface CityPage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  /**
+   * Page title
+   */
+  title: string;
+  /**
+   * Auto-generated from title if left empty
+   */
+  slug: string;
+  /**
+   * Main page content using Lexical editor
+   */
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Short description (max 300 chars)
+   */
+  excerpt?: string | null;
+  /**
+   * Featured image for the page
+   */
+  featuredImage?: (number | null) | Media;
+  /**
+   * SEO title (max 70 chars)
+   */
+  metaTitle?: string | null;
+  /**
+   * SEO description (max 160 chars)
+   */
+  metaDescription?: string | null;
+  /**
+   * Page template layout
+   */
+  template?: ('default' | 'full-width' | 'sidebar') | null;
+  /**
+   * Show this page in navigation menu
+   */
+  showInNav?: boolean | null;
+  /**
+   * Navigation order (if showInNav is enabled)
+   */
+  navOrder?: number | null;
+  status?: ('draft' | 'published') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -440,6 +506,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'city-pages';
         value: number | CityPage;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -624,6 +694,25 @@ export interface CityPagesSelect<T extends boolean = true> {
   metaTitle?: T;
   metaDescription?: T;
   body?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  content?: T;
+  excerpt?: T;
+  featuredImage?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  template?: T;
+  showInNav?: T;
+  navOrder?: T;
   status?: T;
   updatedAt?: T;
   createdAt?: T;

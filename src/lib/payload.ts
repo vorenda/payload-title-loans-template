@@ -85,7 +85,10 @@ export async function getStatePageByCode(stateCode: string) {
 export async function getCityPages(stateCode?: string) {
   const payload = await getPayload()
 
-  const where: Record<string, unknown> = {
+  const where: {
+    status: { equals: string }
+    stateCode?: { equals: string }
+  } = {
     status: { equals: 'published' },
   }
 
@@ -142,4 +145,51 @@ export async function getSettings() {
   return payload.findGlobal({
     slug: 'settings',
   })
+}
+
+// Get all published pages
+export async function getPages() {
+  const payload = await getPayload()
+
+  const pages = await payload.find({
+    collection: 'pages',
+    where: {
+      status: { equals: 'published' },
+    },
+    limit: 100,
+  })
+
+  return pages.docs
+}
+
+// Get single page by slug
+export async function getPageBySlug(slug: string) {
+  const payload = await getPayload()
+
+  const pages = await payload.find({
+    collection: 'pages',
+    where: {
+      slug: { equals: slug },
+      status: { equals: 'published' },
+    },
+  })
+
+  return pages.docs[0] || null
+}
+
+// Get pages for navigation (where showInNav is true, ordered by navOrder)
+export async function getNavPages() {
+  const payload = await getPayload()
+
+  const pages = await payload.find({
+    collection: 'pages',
+    where: {
+      status: { equals: 'published' },
+      showInNav: { equals: true },
+    },
+    sort: 'navOrder',
+    limit: 100,
+  })
+
+  return pages.docs
 }

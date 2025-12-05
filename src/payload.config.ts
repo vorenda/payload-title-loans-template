@@ -10,6 +10,7 @@ import { Media } from './collections/Media'
 import { Services } from './collections/Services'
 import { StatePages } from './collections/StatePages'
 import { CityPages } from './collections/CityPages'
+import { Pages } from './collections/Pages'
 import { Settings } from './globals/Settings'
 
 const filename = fileURLToPath(import.meta.url)
@@ -28,6 +29,7 @@ export default buildConfig({
     Services,
     StatePages,
     CityPages,
+    Pages,
   ],
   globals: [
     Settings,
