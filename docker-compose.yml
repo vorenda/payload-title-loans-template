@@ -2,28 +2,30 @@ version: '3'
 
 services:
   payload:
-    image: node:20-alpine
+    image: node:22.17.0-alpine
     ports:
-      - '3847:3000'
+      - '3093:3093'
     volumes:
       - .:/home/node/app
       - node_modules:/home/node/app/node_modules
+      - pnpm-store:/app/.pnpm-store
+      - next-cache:/app/.next
     working_dir: /home/node/app/
-    command: sh -c "corepack enable && corepack prepare pnpm@9.0.0 --activate && pnpm install && pnpm dev"
+    command: sh -c "corepack enable && corepack prepare pnpm@9.0.0 --activate && pnpm install --frozen-lockfile --prefer-offline && pnpm dev"
     depends_on:
       - postgres
       # - mongo
     env_file:
       - .env
 
-  # Ensure your DATABASE_URI uses 'postgres' as the hostname ie. postgresql://postgres@127.0.0.1:5499/title_loans_db
+  # Ensure your DATABASE_URI uses 'postgres' as the hostname ie. postgresql://postgres@127.0.0.1:6529/title_loans_db
   postgres:
     restart: always
     image: postgres:16
     volumes:
       - pgdata:/var/lib/postgresql
     ports:
-      - '5499:5432'
+      - '6529:5432'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: title_loans_db
@@ -45,3 +47,5 @@ volumes:
   pgdata:
   # data:
   node_modules:
+  pnpm-store:
+  next-cache:
