@@ -130,6 +130,22 @@ export const CityPages: CollectionConfig = {
       ],
     },
     {
+      name: 'financialStats',
+      type: 'group',
+      label: 'Financial Statistics',
+      admin: {
+        description: 'Economic data from uscities database (auto-populated by city-page-generator)',
+      },
+      fields: [
+        { name: 'incomeHouseholdMedian', type: 'number', label: 'Median Household Income' },
+        { name: 'homeValue', type: 'number', label: 'Median Home Value' },
+        { name: 'rentMedian', type: 'number', label: 'Median Rent' },
+        { name: 'unemploymentRate', type: 'number', label: 'Unemployment Rate (%)' },
+        { name: 'poverty', type: 'number', label: 'Poverty Rate (%)' },
+        { name: 'laborForceParticipation', type: 'number', label: 'Labor Force Participation (%)' },
+      ],
+    },
+    {
       name: 'title',
       type: 'text',
       admin: {

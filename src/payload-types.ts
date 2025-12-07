@@ -366,6 +366,17 @@ export interface CityPage {
       }[]
     | null;
   /**
+   * Economic data from uscities database (auto-populated by city-page-generator)
+   */
+  financialStats?: {
+    incomeHouseholdMedian?: number | null;
+    homeValue?: number | null;
+    rentMedian?: number | null;
+    unemploymentRate?: number | null;
+    poverty?: number | null;
+    laborForceParticipation?: number | null;
+  };
+  /**
    * Page heading/title
    */
   title?: string | null;
@@ -689,6 +700,16 @@ export interface CityPagesSelect<T extends boolean = true> {
     | {
         name?: T;
         id?: T;
+      };
+  financialStats?:
+    | T
+    | {
+        incomeHouseholdMedian?: T;
+        homeValue?: T;
+        rentMedian?: T;
+        unemploymentRate?: T;
+        poverty?: T;
+        laborForceParticipation?: T;
       };
   title?: T;
   metaTitle?: T;
