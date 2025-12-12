@@ -18,7 +18,10 @@ services:
     env_file:
       - .env
 
-  # Ensure your DATABASE_URI uses 'postgres' as the hostname ie. postgresql://postgres@127.0.0.1:6529/title_loans_db
+  # DATABASE_URI config:
+  #   - Docker dev (docker-compose up): postgresql://postgres@postgres:5432/title_loans_db
+  #   - Host dev (pnpm dev locally): postgresql://postgres@localhost:<EXPOSED_PORT>/title_loans_db
+  #     where <EXPOSED_PORT> is the left side of the ports mapping below (e.g., 6529 in '6529:5432')
   postgres:
     restart: always
     image: postgres:16
